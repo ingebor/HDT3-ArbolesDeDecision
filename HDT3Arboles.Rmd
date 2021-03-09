@@ -1,0 +1,23 @@
+---
+title: "HDT3Arboles"
+author: "Ayleen Rubio 19003, Andrés Say 19705. Andreé Toledo 18439"
+date: "8/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#"C:/Users/andre/OneDrive/Documentos/HT1.Analisis-Exploratorio"
+#Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT1
+
+knitr::opts_knit$set(root.dir="C:/Users/Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT3-ArbolesDeDecision")
+```
+
+## Hoja de Trabajo No. 3: Árboles de Decisión
+```{r analisis, echo=FALSE}
+datosCasas <- read.csv("train.csv")
+summary(datosCasas)
+table(unlist(lapply(datosCasas, class)))
+```
+Con esto puede observarse que, del total de variables con las que cuenta nuestra base de datos, 43 son de tipo character y 38 son de tipo integer, siendo una de ellas el id por lo que no será utilizado en el futuro para formar grupos. 
+
