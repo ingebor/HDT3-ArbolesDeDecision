@@ -13,11 +13,72 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir="C:/Users/Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT3-ArbolesDeDecision")
 ```
 
-## Hoja de Trabajo No. 3: Árboles de Decisión
+# Hoja de Trabajo No. 3: Árboles de Decisión  
+
+## Análisis Exploratorio
+A continuación se mostrará un resumen de cada una de las variables y el tipo 
 ```{r analisis, echo=FALSE}
 datosCasas <- read.csv("train.csv")
 summary(datosCasas)
+str(datosCasas)
 table(unlist(lapply(datosCasas, class)))
 ```
 Con esto puede observarse que, del total de variables con las que cuenta nuestra base de datos, 43 son de tipo character y 38 son de tipo integer, siendo una de ellas el id por lo que no será utilizado en el futuro para formar grupos. 
+
+De estas variables se ha considerado que algunas de ellas valen la pena estudiarlas más a fondo para conocer las condiciones de los datos con los que se llevará a cabo el entrenamiento y las pruebas.
+
+```{r grfBldngCss, echo=FALSE}
+barplot(datosCasas$LotArea, xlab= "Lote", ylab = "Metros cuadrados", main="Tamaño del lote en metros cuadrados")
+```
+
+En este caso, puede observarse que la mayoría de casas se encuentra debajo de los 50,ooo metros cuadrados y que la casa que cuenta con mayor área de lote cuenta con más de 200,000 metros cuadrados.
+
+```{r echo=FALSE}
+plot(x = datosCasas$SalePrice, y= datosCasas$LotArea, xlab= "Precio de la casa", ylab= "Tamaño del lote", main = "Correlación entre tamaño del lote y precio de la casa")
+abline(lm(datosCasas$LotArea ~ datosCasas$SalePrice), col = "red")
+```
+
+Puede observarse que sí existe correlación entre el precio de la casa y el tamaño del lote, a pesar de que se cuente con algunos datos atípicos. En estos casos, puede que el precio de la casa varíe debido a el tipo de construcción o lo que se encuentre dentro de ella, como la cantidad de cuartos, baños, cocinas, entre otros.
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$Condition1)
+ggplot(data=df, aes(x=datosCasas$Condition1)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+
+Puede observarse que la proximidad más común es la normal.
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$HouseStyle)
+ggplot(data=df, aes(x=datosCasas$HouseStyle)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+
+Puede observarse cómo es que el tipo de vivienda más común es el de un solo nivel, seguido por las casas de 2 niveles.
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$BldgType)
+ggplot(data=df, aes(x=datosCasas$BldgType)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+
+De la misma manera, puede observarse que los estilos de viviendas más comunes son para una sola familia.
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$OverallQual)
+ggplot(data=df, aes(x=datosCasas$OverallQual)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+df2 <- as.data.frame(datosCasas$OverallCond)
+ggplot(data=df2, aes(x=datosCasas$OverallCond)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+
+En estos gráficos puede observarse que tanto los materiales, acabado y condidiones generales de las casas se encuentran en promedio en un valor de 5 de 10.
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$YearBuilt)
+ggplot(data=df, aes(x=datosCasas$YearBuilt)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+df <- as.data.frame(datosCasas$YearRemodAdd)
+ggplot(data=df, aes(x=datosCasas$YearRemodAdd)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
 
