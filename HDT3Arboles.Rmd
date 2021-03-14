@@ -9,8 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 #"C:/Users/andre/OneDrive/Documentos/HT1.Analisis-Exploratorio"
 #Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT1
+#"C:/Users/andre/OneDrive/Documentos/HDT3-ArbolesDeDecision"
 
-knitr::opts_knit$set(root.dir="C:/Users/Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT3-ArbolesDeDecision")
+knitr::opts_knit$set(root.dir="C:/Users/andre/OneDrive/Documentos/HDT3-ArbolesDeDecision")
+
+library(cluster) #Para calcular la silueta
+library(e1071)#para cmeans
+library(mclust) #mixtures of gaussians
+library(fpc) #para hacer el plotcluster
+library(NbClust) #Para determinar el n?mero de clusters ?ptimo
+library(factoextra) #Para hacer gr?ficos bonitos de clustering
 ```
 
 # Hoja de Trabajo No. 3: Árboles de Decisión  
@@ -81,4 +89,85 @@ ggplot(data=df, aes(x=datosCasas$YearBuilt)) + geom_bar(stat="count", width=0.7,
 df <- as.data.frame(datosCasas$YearRemodAdd)
 ggplot(data=df, aes(x=datosCasas$YearRemodAdd)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
 ```
+Seccion de clustering 
+
+
+```{r preprocesamiento, echo=FALSE}
+datos <- datosCasas[,c(5,18,19,20,52,63,81)]
+summary(datos)
+```
+Se trabajará con las siguientes variables que tienen formato int para formas grupos: LotArea, overallQual, overallCond, yearBuilt,bedroomAbvGr, GarageArea, SalePrice Esto debido a que son variables que se pueden clasificar por grupos y los resultados pueden ser interpretados.
+
+
+Para saber la mejor cantidad de clusters a utilizar, se hará lo siguiente:
+```{r cantClusters, echo=FALSE}
+wss <- (nrow(datos[,1:7])-1)*sum(apply(datos[,1:7],2,var))
+
+for (i in 2:10) 
+  wss[i] <- sum(kmeans(datos[,1:7], centers=i)$withinss)
+
+plot(1:10, wss, type="b", xlab="Number of Clusters",  ylab="Within groups sum of squares")
+
+```
+## Agrupamiento por medio de k-means  
+```{r kmeans, echo=FALSE}
+km<-kmeans(datos[,1:7],3,iter.max =100)
+datos$grupo<-km$cluster
+
+plotcluster(datos[,1:7],km$cluster)
+
+```
+Se puede observar cómo es que se han dividido los tres grupos, siendo el primero el de color negro, el segundo el de color rojo y el tercero el de color verde. 
+
+## Agrupamiento por medio de clustering jerárquico
+```{r jerarquico, echo=FALSE}
+hc<-hclust(dist(datos[,1:7])) #Genera el clustering jerárquico de los datos
+hc
+plot(hc) #Genera el dendograma
+rect.hclust(hc,k=3) #Dibuja el corte de los grupos en el gráfico
+groups<-cutree(hc,k=3) #corta el dendograma, determinando el grupo de cada fila
+datos$gruposHC<-groups
+
+
+g1HC<-datos[datos$gruposHC==1,]
+g2HC<-datos[datos$gruposHC==2,]
+g3HC<-datos[datos$gruposHC==3,]
+
+```
+Interpretacion
+
+## Mixture of gaussians
+```{r gaussians, echo = FALSE}
+mc<-Mclust(datos[,1:7],3)
+plot(mc, what = "classification", main="MClust Classification")
+datos$mxGau<-mc$classification
+g1MC<-datos[datos$mxGau==1,]
+g2MC<-datos[datos$mxGau==2,]
+g3MC<-datos[datos$mxGau==3,]
+```
+Es este gráfico puede observarse cómo es que para cada combinación de variables cuál es la combinación de los grupos
+
+## Calidad del agrupamiento
+### K-means
+```{r calk, echo=FALSE}
+silkm<-silhouette(km$cluster,dist(datos[,1:7]))
+mean(silkm[,3])
+```
+
+### Cluster jerárquico
+```{r caljer, echo=FALSE}
+silch<-silhouette(groups,dist(datos[,1:7]))
+mean(silch[,3])
+
+```
+### Mixture of gaussians
+```{r calGau, echo=FALSE}
+silmg<-silhouette(mc$classification,dist(datos[,1:7]))
+mean(silmg[,3])
+```
+
+Según los valores obtenidos, el que cuenta con la mayor silueta es el cluster jerárquico con un valor de 0.625
+
+
+
 
