@@ -8,10 +8,11 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 #"C:/Users/andre/OneDrive/Documentos/HT1.Analisis-Exploratorio"
-#Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT1
+#Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT3-ArbolesDeDecision
+
 #"C:/Users/andre/OneDrive/Documentos/HDT3-ArbolesDeDecision"
 
-knitr::opts_knit$set(root.dir="C:/Users/andre/OneDrive/Documentos/HDT3-ArbolesDeDecision")
+knitr::opts_knit$set(root.dir="C:/Users/Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT3-ArbolesDeDecision")
 
 library(cluster) #Para calcular la silueta
 library(e1071)#para cmeans
@@ -47,11 +48,11 @@ barplot(datosCasas$LotArea, xlab= "Lote", ylab = "Metros cuadrados", main="Tama�
 En este caso, puede observarse que la mayoría de casas se encuentra debajo de los 50,ooo metros cuadrados y que la casa que cuenta con mayor área de lote cuenta con más de 200,000 metros cuadrados.
 
 ```{r echo=FALSE}
-plot(x = datosCasas$SalePrice, y= datosCasas$LotArea, xlab= "Precio de la casa", ylab= "Tamaño del lote", main = "Correlación entre tamaño del lote y precio de la casa")
-abline(lm(datosCasas$LotArea ~ datosCasas$SalePrice), col = "red")
+plot(x = datosCasas$LotArea, y= datosCasas$SalePrice, xlab= "Tamaño del lote", ylab= "Precio de venta", main = "Correlación entre tamaño del lote y precio de la casa")
+abline(lm(datosCasas$SalePrice ~ datosCasas$LotArea), col = "red")
 ```
 
-Puede observarse que sí existe correlación entre el precio de la casa y el tamaño del lote, a pesar de que se cuente con algunos datos atípicos. En estos casos, puede que el precio de la casa varíe debido a el tipo de construcción o lo que se encuentre dentro de ella, como la cantidad de cuartos, baños, cocinas, entre otros.
+Puede observarse que no existe correlación entre el precio de la casa y el tamaño del lote, esto ya que la mayoría de valores se encuentran antes de los 50,000 metros cuadrados y el precio de venta cambia alrededor de los mismos tamaños de lote, además, las casas a mayor precio se encuentran entre los tamaño de lote menores.
 
 ```{r echo=FALSE}
 library(ggplot2)
@@ -91,17 +92,63 @@ En estos gráficos puede observarse que tanto los materiales, acabado y condidio
 library(ggplot2)
 df <- as.data.frame(datosCasas$YearBuilt)
 ggplot(data=df, aes(x=datosCasas$YearBuilt)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
-df <- as.data.frame(datosCasas$YearRemodAdd)
-ggplot(data=df, aes(x=datosCasas$YearRemodAdd)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
 ```
-Seccion de clustering 
+En este gráfico puede observarse que los años en los que más hubo construcción de casas ha sido de 1990 a 2000
+
+```{r echo=FALSE}
+plot(x = datosCasas$YearBuilt, y= datosCasas$SalePrice, xlab= "Año de construccion", ylab= "Precio de venta", main = "Correlación entre precio de la casa y su año de construccion")
+abline(lm(datosCasas$SalePrice ~ datosCasas$YearBuilt), col = "red")
+```
+Como puede observarse, sí existe una correlación entre el año de construcción y el precio de la casa, ya que puede observarse cómo es que los valores de precio van aumentando a medida que los años van incrementando.
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$BsmtCond)
+ggplot(data=df, aes(x=datosCasas$BsmtCond)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$BsmtQual)
+ggplot(data=df, aes(x=datosCasas$BsmtQual)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$BsmtExposure)
+ggplot(data=df, aes(x=datosCasas$BsmtExposure)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$TotalBsmtSF)
+ggplot(data=df, aes(x=datosCasas$TotalBsmtSF)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+plot(x = datosCasas$TotalBsmtSF, y= datosCasas$SalePrice, xlab= "Total de mestros cuadrados del sotano", ylab= "Precio de venta", main = "Correlación entre precio de venta y total de metros cuadrados del sotano")
+abline(lm(datosCasas$SalePrice ~ datosCasas$TotalBsmtSF), col = "red")
+```
+Según lo observado, a pesar que se cuente con lagunos puntos atipicos, sí existe una correlación entre el precio de vente y el total de metros cuadrados del area del sotano.
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$Heating)
+ggplot(data=df, aes(x=datosCasas$Heating)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
+
+```{r echo=FALSE}
+library(ggplot2)
+df <- as.data.frame(datosCasas$BsmtFullBath)
+ggplot(data=df, aes(x=datosCasas$BsmtFullBath)) + geom_bar(stat="count", width=0.7, fill = "steelblue")+theme_minimal()
+```
 
 
+
+
+##Seccion de clustering 
+
+Se trabajará con las siguientes variables que tienen formato int para formas grupos: LotArea, overallQual, overallCond, yearBuilt,bedroomAbvGr, GarageArea, SalePrice Esto debido a que son variables que se pueden clasificar por grupos y los resultados pueden ser interpretados.
 ```{r preprocesamiento, echo=FALSE}
 datos <- datosCasas[,c(5,18,19,20,52,63,81)]
 summary(datos)
 ```
-Se trabajará con las siguientes variables que tienen formato int para formas grupos: LotArea, overallQual, overallCond, yearBuilt,bedroomAbvGr, GarageArea, SalePrice Esto debido a que son variables que se pueden clasificar por grupos y los resultados pueden ser interpretados.
 
 Para saber la mejor cantidad de clusters a utilizar, se hará lo siguiente:
 ```{r cantClusters, echo=FALSE}
