@@ -98,7 +98,6 @@ summary(datos)
 ```
 Se trabajará con las siguientes variables que tienen formato int para formas grupos: LotArea, overallQual, overallCond, yearBuilt,bedroomAbvGr, GarageArea, SalePrice Esto debido a que son variables que se pueden clasificar por grupos y los resultados pueden ser interpretados.
 
-
 Para saber la mejor cantidad de clusters a utilizar, se hará lo siguiente:
 ```{r cantClusters, echo=FALSE}
 wss <- (nrow(datos[,1:7])-1)*sum(apply(datos[,1:7],2,var))
@@ -109,12 +108,15 @@ for (i in 2:10)
 plot(1:10, wss, type="b", xlab="Number of Clusters",  ylab="Within groups sum of squares")
 
 ```
+
+
 ## Agrupamiento por medio de k-means  
 ```{r kmeans, echo=FALSE}
 km<-kmeans(datos[,1:7],3,iter.max =100)
 datos$grupo<-km$cluster
 
 plotcluster(datos[,1:7],km$cluster)
+
 
 ```
 Se puede observar cómo es que se han dividido los tres grupos, siendo el primero el de color negro, el segundo el de color rojo y el tercero el de color verde. 
@@ -134,18 +136,6 @@ g2HC<-datos[datos$gruposHC==2,]
 g3HC<-datos[datos$gruposHC==3,]
 
 ```
-Interpretacion
-
-## Mixture of gaussians
-```{r gaussians, echo = FALSE}
-mc<-Mclust(datos[,1:7],3)
-plot(mc, what = "classification", main="MClust Classification")
-datos$mxGau<-mc$classification
-g1MC<-datos[datos$mxGau==1,]
-g2MC<-datos[datos$mxGau==2,]
-g3MC<-datos[datos$mxGau==3,]
-```
-Es este gráfico puede observarse cómo es que para cada combinación de variables cuál es la combinación de los grupos
 
 ## Calidad del agrupamiento
 ### K-means
@@ -160,14 +150,12 @@ silch<-silhouette(groups,dist(datos[,1:7]))
 mean(silch[,3])
 
 ```
-### Mixture of gaussians
-```{r calGau, echo=FALSE}
-silmg<-silhouette(mc$classification,dist(datos[,1:7]))
-mean(silmg[,3])
+Según los valores obtenidos, el que cuenta con la mayor silueta es el cluster jerárquico con un valor de 0.625, seguido de cerca de K means
+
+
+```{r analisis de cada grupo K means, echo=FALSE}
+summary(g1HC)
+summary(g2HC)
+summary(g3HC)
+
 ```
-
-Según los valores obtenidos, el que cuenta con la mayor silueta es el cluster jerárquico con un valor de 0.625
-
-
-
-
