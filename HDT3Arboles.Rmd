@@ -9,10 +9,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 #"C:/Users/andre/OneDrive/Documentos/HT1.Analisis-Exploratorio"
 #Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT3-ArbolesDeDecision
+#C:/Users/Andree/Documents/GitHub/HDT3-ArbolesDeDecision
 
-#"C:/Users/andre/OneDrive/Documentos/HDT3-ArbolesDeDecision"
 
-knitr::opts_knit$set(root.dir="C:/Users/Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/HDT3-ArbolesDeDecision")
+knitr::opts_knit$set(root.dir="C:/Users/Andree/Documents/GitHub/HDT3-ArbolesDeDecision")
 
 library(cluster) #Para calcular la silueta
 library(e1071)#para cmeans
@@ -25,6 +25,7 @@ library(caret)
 library(tree)
 library(rpart.plot)
 library(randomForest)
+library(rpart)
 ```
 
 # Hoja de Trabajo No. 3: Árboles de Decisión  
@@ -491,3 +492,37 @@ arbolModelo<-rpart(SalePrice~.,datosCasas,method = "anova")
 rpart.plot(arbolModelo)
 
 ```
+Elabore el árbol de regresión para predecir el precio de las viviendas utilizando el conjunto de entrenamiento.  Explique los resultados alos que llega. Muestre el modelo gráficamente. El  experimento  debe  ser  reproducible  por  lo  que  debe  fijar  que  los  conjuntos  de entrenamiento y prueba sean los mismos siempre que se ejecute el código.
+
+```{r arbolregresion , echo=FALSE}
+datosCasas <- read.csv("train.csv")
+
+
+mod1 <- rpart(SalePrice ~ ., data=datosCasas)
+
+
+y_hat <- predict(object=mod1, newdata=datosCasas)
+cor(y_hat, datos$SalePrice)
+
+prp(mod1)
+
+```
+
+Utilice  el  modelo  con  el  conjunto  de  prueba  y  determinela  eficiencia  del  algoritmo  para clasificar ypredecir, en dependencia de las características de la variable respuesta. 
+```{r arbolregresionEficiencia , echo=FALSE}
+
+```
+Haga un análisis de la eficiencia del algoritmo usando una matriz de confusiónpara el árbol de clasificación. Tenga en cuenta la efectividad, donde el algoritmo se equivocó más, donde se equivocó menos y la importancia que tienen los errores.
+```{r matriz confusion , echo=FALSE}
+
+```
+Analice el desempeño del árbol de regresión.
+```{r arbolregresionDesempeño, echo=FALSE}
+
+```
+Repita  los  análisis  usando  random  forest  como  algoritmo  de  predicción,  explique  sus resultados comparando ambos algoritmos. 
+```{r arbolregresionRandomForest , echo=FALSE}
+
+```
+
+
