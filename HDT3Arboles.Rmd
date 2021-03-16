@@ -492,7 +492,8 @@ arbolModelo<-rpart(SalePrice~.,datosCasas,method = "anova")
 rpart.plot(arbolModelo)
 
 ```
-Elabore el árbol de regresión para predecir el precio de las viviendas utilizando el conjunto de entrenamiento.  Explique los resultados alos que llega. Muestre el modelo gráficamente. El  experimento  debe  ser  reproducible  por  lo  que  debe  fijar  que  los  conjuntos  de entrenamiento y prueba sean los mismos siempre que se ejecute el código.
+Árbol de regresión para predecir el precio de las viviendas utilizando el conjunto de entrenamiento. Entre más cerca estén las de los  observados se puede decir que el modelo es mejor. A continuación la correlación entre  
+
 
 ```{r arbolregresion , echo=FALSE}
 datosCasas <- read.csv("train.csv")
@@ -500,11 +501,26 @@ datosCasas <- read.csv("train.csv")
 
 mod1 <- rpart(SalePrice ~ ., data=datosCasas)
 
+prp(mod1, main="",
+    nn = TRUE,             # display the node numbers
+    fallen.leaves = TRUE,  # put the leaves on the bottom of the page
+    shadow.col = "gray",   # shadows under the leaves
+    branch.lty = 3,        # draw branches using dotted lines
+    branch = .5,           # change angle of branch lines
+    faclen = 0,            # faclen = 0 to print full factor names
+    trace = 1,             # print the auto calculated cex, xlim, ylim
+    split.cex = 1.2,       # make the split text larger than the node text
+    split.prefix = "is ",  # put "is " before split text
+    split.suffix = "?",    # put "?" after split text
+    split.box.col = "lightblue",   # lightgray split boxes (default is white)
+    split.border.col = "darkgray", # darkgray border on split boxes
+    split.round = 0.5)             # round the split box corners a tad
 
 y_hat <- predict(object=mod1, newdata=datosCasas)
 cor(y_hat, datos$SalePrice)
 
-prp(mod1)
+plot(x=datosCasas$SalePrice, y=y_hat, pch=20, las=1, xlab='y', ylab=expression(hat(SalePrice)))
+abline(a=0, b=1, lty="dashed", col="blue")
 
 ```
 
