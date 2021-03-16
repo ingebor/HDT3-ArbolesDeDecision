@@ -1,0 +1,923 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{amssymb}
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={HDT3Arboles},
+  pdfauthor={Ayleen Rubio 19003, Andrés Say 19705. Andreé Toledo 18439},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{HDT3Arboles}
+\author{Ayleen Rubio 19003, Andrés Say 19705. Andreé Toledo 18439}
+\date{8/3/2021}
+
+\begin{document}
+\maketitle
+
+\hypertarget{hoja-de-trabajo-no.-3-uxe1rboles-de-decisiuxf3n}{%
+\section{Hoja de Trabajo No.~3: Árboles de
+Decisión}\label{hoja-de-trabajo-no.-3-uxe1rboles-de-decisiuxf3n}}
+
+\hypertarget{anuxe1lisis-exploratorio}{%
+\subsection{Análisis Exploratorio}\label{anuxe1lisis-exploratorio}}
+
+A continuación se mostrará un resumen de cada una de las variables y el
+tipo
+
+\begin{verbatim}
+##        Id           MSSubClass      MSZoning          LotFrontage    
+##  Min.   :   1.0   Min.   : 20.0   Length:1460        Min.   : 21.00  
+##  1st Qu.: 365.8   1st Qu.: 20.0   Class :character   1st Qu.: 59.00  
+##  Median : 730.5   Median : 50.0   Mode  :character   Median : 69.00  
+##  Mean   : 730.5   Mean   : 56.9                      Mean   : 70.05  
+##  3rd Qu.:1095.2   3rd Qu.: 70.0                      3rd Qu.: 80.00  
+##  Max.   :1460.0   Max.   :190.0                      Max.   :313.00  
+##                                                      NA's   :259     
+##     LotArea          Street             Alley             LotShape        
+##  Min.   :  1300   Length:1460        Length:1460        Length:1460       
+##  1st Qu.:  7554   Class :character   Class :character   Class :character  
+##  Median :  9478   Mode  :character   Mode  :character   Mode  :character  
+##  Mean   : 10517                                                           
+##  3rd Qu.: 11602                                                           
+##  Max.   :215245                                                           
+##                                                                           
+##  LandContour         Utilities          LotConfig          LandSlope        
+##  Length:1460        Length:1460        Length:1460        Length:1460       
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##  Neighborhood        Condition1         Condition2          BldgType        
+##  Length:1460        Length:1460        Length:1460        Length:1460       
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##   HouseStyle         OverallQual      OverallCond      YearBuilt   
+##  Length:1460        Min.   : 1.000   Min.   :1.000   Min.   :1872  
+##  Class :character   1st Qu.: 5.000   1st Qu.:5.000   1st Qu.:1954  
+##  Mode  :character   Median : 6.000   Median :5.000   Median :1973  
+##                     Mean   : 6.099   Mean   :5.575   Mean   :1971  
+##                     3rd Qu.: 7.000   3rd Qu.:6.000   3rd Qu.:2000  
+##                     Max.   :10.000   Max.   :9.000   Max.   :2010  
+##                                                                    
+##   YearRemodAdd   RoofStyle           RoofMatl         Exterior1st       
+##  Min.   :1950   Length:1460        Length:1460        Length:1460       
+##  1st Qu.:1967   Class :character   Class :character   Class :character  
+##  Median :1994   Mode  :character   Mode  :character   Mode  :character  
+##  Mean   :1985                                                           
+##  3rd Qu.:2004                                                           
+##  Max.   :2010                                                           
+##                                                                         
+##  Exterior2nd         MasVnrType          MasVnrArea      ExterQual        
+##  Length:1460        Length:1460        Min.   :   0.0   Length:1460       
+##  Class :character   Class :character   1st Qu.:   0.0   Class :character  
+##  Mode  :character   Mode  :character   Median :   0.0   Mode  :character  
+##                                        Mean   : 103.7                     
+##                                        3rd Qu.: 166.0                     
+##                                        Max.   :1600.0                     
+##                                        NA's   :8                          
+##   ExterCond          Foundation          BsmtQual           BsmtCond        
+##  Length:1460        Length:1460        Length:1460        Length:1460       
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##  BsmtExposure       BsmtFinType1         BsmtFinSF1     BsmtFinType2      
+##  Length:1460        Length:1460        Min.   :   0.0   Length:1460       
+##  Class :character   Class :character   1st Qu.:   0.0   Class :character  
+##  Mode  :character   Mode  :character   Median : 383.5   Mode  :character  
+##                                        Mean   : 443.6                     
+##                                        3rd Qu.: 712.2                     
+##                                        Max.   :5644.0                     
+##                                                                           
+##    BsmtFinSF2        BsmtUnfSF       TotalBsmtSF       Heating         
+##  Min.   :   0.00   Min.   :   0.0   Min.   :   0.0   Length:1460       
+##  1st Qu.:   0.00   1st Qu.: 223.0   1st Qu.: 795.8   Class :character  
+##  Median :   0.00   Median : 477.5   Median : 991.5   Mode  :character  
+##  Mean   :  46.55   Mean   : 567.2   Mean   :1057.4                     
+##  3rd Qu.:   0.00   3rd Qu.: 808.0   3rd Qu.:1298.2                     
+##  Max.   :1474.00   Max.   :2336.0   Max.   :6110.0                     
+##                                                                        
+##   HeatingQC          CentralAir         Electrical          X1stFlrSF   
+##  Length:1460        Length:1460        Length:1460        Min.   : 334  
+##  Class :character   Class :character   Class :character   1st Qu.: 882  
+##  Mode  :character   Mode  :character   Mode  :character   Median :1087  
+##                                                           Mean   :1163  
+##                                                           3rd Qu.:1391  
+##                                                           Max.   :4692  
+##                                                                         
+##    X2ndFlrSF     LowQualFinSF       GrLivArea     BsmtFullBath   
+##  Min.   :   0   Min.   :  0.000   Min.   : 334   Min.   :0.0000  
+##  1st Qu.:   0   1st Qu.:  0.000   1st Qu.:1130   1st Qu.:0.0000  
+##  Median :   0   Median :  0.000   Median :1464   Median :0.0000  
+##  Mean   : 347   Mean   :  5.845   Mean   :1515   Mean   :0.4253  
+##  3rd Qu.: 728   3rd Qu.:  0.000   3rd Qu.:1777   3rd Qu.:1.0000  
+##  Max.   :2065   Max.   :572.000   Max.   :5642   Max.   :3.0000  
+##                                                                  
+##   BsmtHalfBath        FullBath        HalfBath       BedroomAbvGr  
+##  Min.   :0.00000   Min.   :0.000   Min.   :0.0000   Min.   :0.000  
+##  1st Qu.:0.00000   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.:2.000  
+##  Median :0.00000   Median :2.000   Median :0.0000   Median :3.000  
+##  Mean   :0.05753   Mean   :1.565   Mean   :0.3829   Mean   :2.866  
+##  3rd Qu.:0.00000   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.:3.000  
+##  Max.   :2.00000   Max.   :3.000   Max.   :2.0000   Max.   :8.000  
+##                                                                    
+##   KitchenAbvGr   KitchenQual         TotRmsAbvGrd     Functional       
+##  Min.   :0.000   Length:1460        Min.   : 2.000   Length:1460       
+##  1st Qu.:1.000   Class :character   1st Qu.: 5.000   Class :character  
+##  Median :1.000   Mode  :character   Median : 6.000   Mode  :character  
+##  Mean   :1.047                      Mean   : 6.518                     
+##  3rd Qu.:1.000                      3rd Qu.: 7.000                     
+##  Max.   :3.000                      Max.   :14.000                     
+##                                                                        
+##    Fireplaces    FireplaceQu         GarageType         GarageYrBlt  
+##  Min.   :0.000   Length:1460        Length:1460        Min.   :1900  
+##  1st Qu.:0.000   Class :character   Class :character   1st Qu.:1961  
+##  Median :1.000   Mode  :character   Mode  :character   Median :1980  
+##  Mean   :0.613                                         Mean   :1979  
+##  3rd Qu.:1.000                                         3rd Qu.:2002  
+##  Max.   :3.000                                         Max.   :2010  
+##                                                        NA's   :81    
+##  GarageFinish         GarageCars      GarageArea      GarageQual       
+##  Length:1460        Min.   :0.000   Min.   :   0.0   Length:1460       
+##  Class :character   1st Qu.:1.000   1st Qu.: 334.5   Class :character  
+##  Mode  :character   Median :2.000   Median : 480.0   Mode  :character  
+##                     Mean   :1.767   Mean   : 473.0                     
+##                     3rd Qu.:2.000   3rd Qu.: 576.0                     
+##                     Max.   :4.000   Max.   :1418.0                     
+##                                                                        
+##   GarageCond         PavedDrive          WoodDeckSF      OpenPorchSF    
+##  Length:1460        Length:1460        Min.   :  0.00   Min.   :  0.00  
+##  Class :character   Class :character   1st Qu.:  0.00   1st Qu.:  0.00  
+##  Mode  :character   Mode  :character   Median :  0.00   Median : 25.00  
+##                                        Mean   : 94.24   Mean   : 46.66  
+##                                        3rd Qu.:168.00   3rd Qu.: 68.00  
+##                                        Max.   :857.00   Max.   :547.00  
+##                                                                         
+##  EnclosedPorch      X3SsnPorch      ScreenPorch        PoolArea      
+##  Min.   :  0.00   Min.   :  0.00   Min.   :  0.00   Min.   :  0.000  
+##  1st Qu.:  0.00   1st Qu.:  0.00   1st Qu.:  0.00   1st Qu.:  0.000  
+##  Median :  0.00   Median :  0.00   Median :  0.00   Median :  0.000  
+##  Mean   : 21.95   Mean   :  3.41   Mean   : 15.06   Mean   :  2.759  
+##  3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  0.000  
+##  Max.   :552.00   Max.   :508.00   Max.   :480.00   Max.   :738.000  
+##                                                                      
+##     PoolQC             Fence           MiscFeature           MiscVal        
+##  Length:1460        Length:1460        Length:1460        Min.   :    0.00  
+##  Class :character   Class :character   Class :character   1st Qu.:    0.00  
+##  Mode  :character   Mode  :character   Mode  :character   Median :    0.00  
+##                                                           Mean   :   43.49  
+##                                                           3rd Qu.:    0.00  
+##                                                           Max.   :15500.00  
+##                                                                             
+##      MoSold           YrSold       SaleType         SaleCondition     
+##  Min.   : 1.000   Min.   :2006   Length:1460        Length:1460       
+##  1st Qu.: 5.000   1st Qu.:2007   Class :character   Class :character  
+##  Median : 6.000   Median :2008   Mode  :character   Mode  :character  
+##  Mean   : 6.322   Mean   :2008                                        
+##  3rd Qu.: 8.000   3rd Qu.:2009                                        
+##  Max.   :12.000   Max.   :2010                                        
+##                                                                       
+##    SalePrice     
+##  Min.   : 34900  
+##  1st Qu.:129975  
+##  Median :163000  
+##  Mean   :180921  
+##  3rd Qu.:214000  
+##  Max.   :755000  
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## 'data.frame':    1460 obs. of  81 variables:
+##  $ Id           : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ MSSubClass   : int  60 20 60 70 60 50 20 60 50 190 ...
+##  $ MSZoning     : chr  "RL" "RL" "RL" "RL" ...
+##  $ LotFrontage  : int  65 80 68 60 84 85 75 NA 51 50 ...
+##  $ LotArea      : int  8450 9600 11250 9550 14260 14115 10084 10382 6120 7420 ...
+##  $ Street       : chr  "Pave" "Pave" "Pave" "Pave" ...
+##  $ Alley        : chr  NA NA NA NA ...
+##  $ LotShape     : chr  "Reg" "Reg" "IR1" "IR1" ...
+##  $ LandContour  : chr  "Lvl" "Lvl" "Lvl" "Lvl" ...
+##  $ Utilities    : chr  "AllPub" "AllPub" "AllPub" "AllPub" ...
+##  $ LotConfig    : chr  "Inside" "FR2" "Inside" "Corner" ...
+##  $ LandSlope    : chr  "Gtl" "Gtl" "Gtl" "Gtl" ...
+##  $ Neighborhood : chr  "CollgCr" "Veenker" "CollgCr" "Crawfor" ...
+##  $ Condition1   : chr  "Norm" "Feedr" "Norm" "Norm" ...
+##  $ Condition2   : chr  "Norm" "Norm" "Norm" "Norm" ...
+##  $ BldgType     : chr  "1Fam" "1Fam" "1Fam" "1Fam" ...
+##  $ HouseStyle   : chr  "2Story" "1Story" "2Story" "2Story" ...
+##  $ OverallQual  : int  7 6 7 7 8 5 8 7 7 5 ...
+##  $ OverallCond  : int  5 8 5 5 5 5 5 6 5 6 ...
+##  $ YearBuilt    : int  2003 1976 2001 1915 2000 1993 2004 1973 1931 1939 ...
+##  $ YearRemodAdd : int  2003 1976 2002 1970 2000 1995 2005 1973 1950 1950 ...
+##  $ RoofStyle    : chr  "Gable" "Gable" "Gable" "Gable" ...
+##  $ RoofMatl     : chr  "CompShg" "CompShg" "CompShg" "CompShg" ...
+##  $ Exterior1st  : chr  "VinylSd" "MetalSd" "VinylSd" "Wd Sdng" ...
+##  $ Exterior2nd  : chr  "VinylSd" "MetalSd" "VinylSd" "Wd Shng" ...
+##  $ MasVnrType   : chr  "BrkFace" "None" "BrkFace" "None" ...
+##  $ MasVnrArea   : int  196 0 162 0 350 0 186 240 0 0 ...
+##  $ ExterQual    : chr  "Gd" "TA" "Gd" "TA" ...
+##  $ ExterCond    : chr  "TA" "TA" "TA" "TA" ...
+##  $ Foundation   : chr  "PConc" "CBlock" "PConc" "BrkTil" ...
+##  $ BsmtQual     : chr  "Gd" "Gd" "Gd" "TA" ...
+##  $ BsmtCond     : chr  "TA" "TA" "TA" "Gd" ...
+##  $ BsmtExposure : chr  "No" "Gd" "Mn" "No" ...
+##  $ BsmtFinType1 : chr  "GLQ" "ALQ" "GLQ" "ALQ" ...
+##  $ BsmtFinSF1   : int  706 978 486 216 655 732 1369 859 0 851 ...
+##  $ BsmtFinType2 : chr  "Unf" "Unf" "Unf" "Unf" ...
+##  $ BsmtFinSF2   : int  0 0 0 0 0 0 0 32 0 0 ...
+##  $ BsmtUnfSF    : int  150 284 434 540 490 64 317 216 952 140 ...
+##  $ TotalBsmtSF  : int  856 1262 920 756 1145 796 1686 1107 952 991 ...
+##  $ Heating      : chr  "GasA" "GasA" "GasA" "GasA" ...
+##  $ HeatingQC    : chr  "Ex" "Ex" "Ex" "Gd" ...
+##  $ CentralAir   : chr  "Y" "Y" "Y" "Y" ...
+##  $ Electrical   : chr  "SBrkr" "SBrkr" "SBrkr" "SBrkr" ...
+##  $ X1stFlrSF    : int  856 1262 920 961 1145 796 1694 1107 1022 1077 ...
+##  $ X2ndFlrSF    : int  854 0 866 756 1053 566 0 983 752 0 ...
+##  $ LowQualFinSF : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ GrLivArea    : int  1710 1262 1786 1717 2198 1362 1694 2090 1774 1077 ...
+##  $ BsmtFullBath : int  1 0 1 1 1 1 1 1 0 1 ...
+##  $ BsmtHalfBath : int  0 1 0 0 0 0 0 0 0 0 ...
+##  $ FullBath     : int  2 2 2 1 2 1 2 2 2 1 ...
+##  $ HalfBath     : int  1 0 1 0 1 1 0 1 0 0 ...
+##  $ BedroomAbvGr : int  3 3 3 3 4 1 3 3 2 2 ...
+##  $ KitchenAbvGr : int  1 1 1 1 1 1 1 1 2 2 ...
+##  $ KitchenQual  : chr  "Gd" "TA" "Gd" "Gd" ...
+##  $ TotRmsAbvGrd : int  8 6 6 7 9 5 7 7 8 5 ...
+##  $ Functional   : chr  "Typ" "Typ" "Typ" "Typ" ...
+##  $ Fireplaces   : int  0 1 1 1 1 0 1 2 2 2 ...
+##  $ FireplaceQu  : chr  NA "TA" "TA" "Gd" ...
+##  $ GarageType   : chr  "Attchd" "Attchd" "Attchd" "Detchd" ...
+##  $ GarageYrBlt  : int  2003 1976 2001 1998 2000 1993 2004 1973 1931 1939 ...
+##  $ GarageFinish : chr  "RFn" "RFn" "RFn" "Unf" ...
+##  $ GarageCars   : int  2 2 2 3 3 2 2 2 2 1 ...
+##  $ GarageArea   : int  548 460 608 642 836 480 636 484 468 205 ...
+##  $ GarageQual   : chr  "TA" "TA" "TA" "TA" ...
+##  $ GarageCond   : chr  "TA" "TA" "TA" "TA" ...
+##  $ PavedDrive   : chr  "Y" "Y" "Y" "Y" ...
+##  $ WoodDeckSF   : int  0 298 0 0 192 40 255 235 90 0 ...
+##  $ OpenPorchSF  : int  61 0 42 35 84 30 57 204 0 4 ...
+##  $ EnclosedPorch: int  0 0 0 272 0 0 0 228 205 0 ...
+##  $ X3SsnPorch   : int  0 0 0 0 0 320 0 0 0 0 ...
+##  $ ScreenPorch  : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ PoolArea     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ PoolQC       : chr  NA NA NA NA ...
+##  $ Fence        : chr  NA NA NA NA ...
+##  $ MiscFeature  : chr  NA NA NA NA ...
+##  $ MiscVal      : int  0 0 0 0 0 700 0 350 0 0 ...
+##  $ MoSold       : int  2 5 9 2 12 10 8 11 4 1 ...
+##  $ YrSold       : int  2008 2007 2008 2006 2008 2009 2007 2009 2008 2008 ...
+##  $ SaleType     : chr  "WD" "WD" "WD" "WD" ...
+##  $ SaleCondition: chr  "Normal" "Normal" "Normal" "Abnorml" ...
+##  $ SalePrice    : int  208500 181500 223500 140000 250000 143000 307000 200000 129900 118000 ...
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## character   integer 
+##        43        38
+\end{verbatim}
+
+Con esto puede observarse que, del total de variables con las que cuenta
+nuestra base de datos, 43 son de tipo character y 38 son de tipo
+integer, siendo una de ellas el id por lo que no será utilizado en el
+futuro para formar grupos.
+
+De estas variables se ha considerado que algunas de ellas valen la pena
+estudiarlas más a fondo para conocer las condiciones de los datos con
+los que se llevará a cabo el entrenamiento y las pruebas.
+
+\includegraphics{HDT3Arboles_files/figure-latex/grfBldngCss-1.pdf}
+
+En este caso, puede observarse que la mayoría de casas se encuentra
+debajo de los 50,ooo metros cuadrados y que la casa que cuenta con mayor
+área de lote cuenta con más de 200,000 metros cuadrados.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+Puede observarse que no existe correlación entre el precio de la casa y
+el tamaño del lote, esto ya que la mayoría de valores se encuentran
+antes de los 50,000 metros cuadrados y el precio de venta cambia
+alrededor de los mismos tamaños de lote, además, las casas a mayor
+precio se encuentran entre los tamaño de lote menores.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+Puede observarse que la proximidad más común es la normal.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+Puede observarse cómo es que el tipo de vivienda más común es el de un
+solo nivel, seguido por las casas de 2 niveles.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+De la misma manera, puede observarse que los estilos de viviendas más
+comunes son para una sola familia.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-5-2.pdf}
+
+En estos gráficos puede observarse que tanto los materiales, acabado y
+condidiones generales de las casas se encuentran en promedio en un valor
+de 5 de 10.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+En este gráfico puede observarse que los años en los que más hubo
+construcción de casas ha sido de 1990 a 2000
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+Como puede observarse, sí existe una correlación entre el año de
+construcción y el precio de la casa, ya que puede observarse cómo es que
+los valores de precio van aumentando a medida que los años van
+incrementando.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+Podemos observar que la mayoría de los sótanos se encuentra en una
+condición típica, con un poco de humedad, seguido por una buena
+condición.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+Con esta variable se evalúa la altura del sótado, en donde la mayoría
+cuenta con una altura típica ded 80 - 89 pulgadas.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+En este caso, se representa los muros del sótano a nivel de jardín o si
+existe un espacio suficiente para tener una salida directa del sótado al
+jardín, en donde la mayoría no cuenta con espacio suficiente para tener
+una puerta directa hacia el jardín.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-11-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-11-2.pdf}
+
+Según lo observado, a pesar que se cuente con lagunos puntos atipicos,
+sí existe una correlación entre el precio de venta y el total de metros
+cuadrados del area del sotano.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+Puede observarse que el tipo de calefacción más común es el horno de
+aire caliente forzado a gas.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+Puede observarse que es más común que no se cuente con baños completos
+en los sótanos.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+En la mayoría de hogares se cuenta con us sistemaeléctrico de
+disyuntores estándar y Romex
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-15-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-15-2.pdf}
+
+Puede observarse que sí existe correlación entre el total de metros
+cuadrados del primer piso y el precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-16-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-16-2.pdf}
+
+En este caso, los valores que cuentan con 0 metros cuadrados en el
+segundo piso hacen referencia a las casas que no cuentan con un segundo
+piso, por lo que, si no se toman en cuenta esos valores, sí existe
+correlación entre los metros cuadrados del segundo piso y el precio de
+venta de la casa.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+En la mayoría de casas se cuenta con 2 baños completos, sin tomar en
+cuenta los baños del sótano.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+La mayoría de casas no cuenta con medios baños.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-19-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-19-2.pdf}
+
+La mayoría de casas cuenta con 3 cuartos sobre el nivel del suelo. Puede
+observarse también que no existe correlación entre la cantidad de
+cuartos y el precio de venta, ya que las casas que cuentan con más
+cuartos se encuentran entre los precios de venta más bajos.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+La mayoría de casas cuenta únicamente con una cocina sobre el nivel del
+suelo.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+En este gráfico puede observarse que la calidad de las cocinas es típica
+o promedio.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-22-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-22-2.pdf}
+
+Puede observarse que en total de cuartos, sin tomar en cuenta los baños
+completos, la mayoría de casas cuenta con 6 cuartos. A su vez, puede
+observarse que este dato sí tiene correlación con el precio de venta, ya
+que a medida que va aumentando la cantidad de cuartos, va aumentando el
+precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+En la mayoría de las casas no se cuenta con chimeneas, sin embargo, es
+poca la diferencia con la cantidad de casas que cuentan con una
+chimenea.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-24-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-24-2.pdf}
+
+Puede observarse que la mayoría de casas tiene un garage con una
+capacidad de dos carros, al igual que existe una correlación entre este
+dato y el precio de venta, ya que a mayor cantidad de carros que entran
+en un garage, mayor precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-25-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-25-2.pdf}
+
+Todos los valores en cero pueden ser interpretados como las casas que no
+cuentan con un área de madera, luego al observar los demás valores, se
+considera que existen demasiados valores atípicos por lo que no hay
+correlación entre el área de madera y el precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-26-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-26-2.pdf}
+
+Todos los valores en cero pueden ser interpretados como las casas que no
+cuentan con área de porche abierto, luego al observar los demás valores,
+se considera que existen demasiados valores atípicos por lo que no hay
+correlación entre el área de porche abierto y el precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-27-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-27-2.pdf}
+
+Todos los valores en cero pueden ser interpretados como las casas que no
+cuentan con área de porche cerrado, luego al observar los demás valores,
+se considera que existen demasiados valores atípicos por lo que no hay
+correlación entre el área de porche cerrado y el precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-28-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-28-2.pdf}
+
+Todos los valores en cero pueden ser interpretados como las casas que no
+cuentan con área de porche con ventana, luego al observar los demás
+valores se considera que existen demasiados valores atípicos por lo que
+no hay correlación entre el área de porche con ventana y el precio de
+venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-29-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-29-2.pdf}
+
+Todos los valores en cero pueden ser interpretados como las casas que no
+cuentan con área de piscina, luego al observar los demás valores se
+considera que no existen suficientes datos para determinar que sí existe
+correlación entre el área de piscina y el precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-30-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-30-2.pdf}
+
+Puede observarse que han habido más ventas durante el mes de junio, sin
+embargo, no existe correlación entre el mes de venta y el precio de
+venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-31-1.pdf}
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-31-2.pdf}
+
+Puede observarse que han habido más ventas durante el 2009, sin embargo,
+no existe correlación entre el año de venta y el precio de venta.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-32-1.pdf}
+
+Puede observarse que el tipo de venta más común es el convencional con
+una escritura de garantía.
+
+\includegraphics{HDT3Arboles_files/figure-latex/unnamed-chunk-33-1.pdf}
+
+Por último, puede observarse que la condición de venta más común es una
+venta normal.
+
+\hypertarget{seccion-de-clustering}{%
+\subsection{Seccion de clustering}\label{seccion-de-clustering}}
+
+Se trabajará con las siguientes variables que tienen formato int para
+formas grupos: LotArea, overallQual, overallCond,
+yearBuilt,bedroomAbvGr, GarageArea, SalePrice Esto debido a que son
+variables que se pueden clasificar por grupos y los resultados pueden
+ser interpretados.
+
+\begin{verbatim}
+##     LotArea        OverallQual      OverallCond      YearBuilt   
+##  Min.   :  1300   Min.   : 1.000   Min.   :1.000   Min.   :1872  
+##  1st Qu.:  7554   1st Qu.: 5.000   1st Qu.:5.000   1st Qu.:1954  
+##  Median :  9478   Median : 6.000   Median :5.000   Median :1973  
+##  Mean   : 10517   Mean   : 6.099   Mean   :5.575   Mean   :1971  
+##  3rd Qu.: 11602   3rd Qu.: 7.000   3rd Qu.:6.000   3rd Qu.:2000  
+##  Max.   :215245   Max.   :10.000   Max.   :9.000   Max.   :2010  
+##   BedroomAbvGr     GarageArea       SalePrice     
+##  Min.   :0.000   Min.   :   0.0   Min.   : 34900  
+##  1st Qu.:2.000   1st Qu.: 334.5   1st Qu.:129975  
+##  Median :3.000   Median : 480.0   Median :163000  
+##  Mean   :2.866   Mean   : 473.0   Mean   :180921  
+##  3rd Qu.:3.000   3rd Qu.: 576.0   3rd Qu.:214000  
+##  Max.   :8.000   Max.   :1418.0   Max.   :755000
+\end{verbatim}
+
+Para saber la mejor cantidad de clusters a utilizar, se hará lo
+siguiente:
+\includegraphics{HDT3Arboles_files/figure-latex/cantClusters-1.pdf}
+
+En base a esto, se determinó que el número ideal de clusters es 3
+
+\hypertarget{agrupamiento-por-medio-de-k-means}{%
+\subsubsection{Agrupamiento por medio de
+k-means}\label{agrupamiento-por-medio-de-k-means}}
+
+\includegraphics{HDT3Arboles_files/figure-latex/kmeans-1.pdf}
+
+Se puede observar cómo es que se han dividido los tres grupos, siendo el
+primero el de color negro, el segundo el de color rojo y el tercero el
+de color verde. Los grupos rojo y verde se encuentran altamente
+aglomerados, mientras que el grupo negro agrupa los datos más dispersos
+
+\hypertarget{agrupamiento-por-medio-de-clustering-jeruxe1rquico}{%
+\subsubsection{Agrupamiento por medio de clustering
+jerárquico}\label{agrupamiento-por-medio-de-clustering-jeruxe1rquico}}
+
+\begin{verbatim}
+## 
+## Call:
+## hclust(d = dist(datos[, 1:7]))
+## 
+## Cluster method   : complete 
+## Distance         : euclidean 
+## Number of objects: 1460
+\end{verbatim}
+
+\includegraphics{HDT3Arboles_files/figure-latex/jerarquico-1.pdf}
+
+Este diagrama es más complicado de interpretar, cuenta con varios
+objetos, razón por la cual es más complicada encontrar la division entre
+dos grupos, sin embargo, es posible observar que uno de ellos se
+encuentra con datos mucho mas dispersos, el de la izquierda.
+
+\hypertarget{calidad-del-agrupamiento}{%
+\subsubsection{Calidad del
+agrupamiento}\label{calidad-del-agrupamiento}}
+
+\hypertarget{k-means}{%
+\paragraph{K-means}\label{k-means}}
+
+\begin{verbatim}
+## [1] 0.5490654
+\end{verbatim}
+
+\hypertarget{cluster-jeruxe1rquico}{%
+\paragraph{Cluster jerárquico}\label{cluster-jeruxe1rquico}}
+
+\begin{verbatim}
+## [1] 0.6258748
+\end{verbatim}
+
+Según los valores obtenidos, el que cuenta con la mayor silueta es el
+cluster jerárquico con un valor de 0.625, seguido de cerca de K means
+
+\begin{verbatim}
+##     LotArea       OverallQual      OverallCond      YearBuilt   
+##  Min.   : 1300   Min.   : 1.000   Min.   :1.000   Min.   :1872  
+##  1st Qu.: 7200   1st Qu.: 5.000   1st Qu.:5.000   1st Qu.:1949  
+##  Median : 8960   Median : 6.000   Median :5.000   Median :1967  
+##  Mean   : 9299   Mean   : 5.678   Mean   :5.614   Mean   :1966  
+##  3rd Qu.:10792   3rd Qu.: 6.000   3rd Qu.:6.000   3rd Qu.:1994  
+##  Max.   :63887   Max.   :10.000   Max.   :9.000   Max.   :2009  
+##   BedroomAbvGr     GarageArea       SalePrice          grupo          gruposHC
+##  Min.   :0.000   Min.   :   0.0   Min.   : 34900   Min.   :1.000   Min.   :1  
+##  1st Qu.:2.000   1st Qu.: 297.0   1st Qu.:124000   1st Qu.:1.000   1st Qu.:1  
+##  Median :3.000   Median : 440.0   Median :147000   Median :3.000   Median :1  
+##  Mean   :2.826   Mean   : 419.9   Mean   :150516   Mean   :2.387   Mean   :1  
+##  3rd Qu.:3.000   3rd Qu.: 528.0   3rd Qu.:179783   3rd Qu.:3.000   3rd Qu.:1  
+##  Max.   :8.000   Max.   :1418.0   Max.   :232600   Max.   :3.000   Max.   :1
+\end{verbatim}
+
+\begin{verbatim}
+##     LotArea        OverallQual      OverallCond      YearBuilt   
+##  Min.   :  3196   Min.   : 4.000   Min.   :2.000   Min.   :1880  
+##  1st Qu.: 10120   1st Qu.: 7.000   1st Qu.:5.000   1st Qu.:1992  
+##  Median : 11839   Median : 8.000   Median :5.000   Median :2003  
+##  Mean   : 15319   Mean   : 7.791   Mean   :5.422   Mean   :1993  
+##  3rd Qu.: 14230   3rd Qu.: 8.000   3rd Qu.:5.000   3rd Qu.:2006  
+##  Max.   :215245   Max.   :10.000   Max.   :9.000   Max.   :2010  
+##   BedroomAbvGr     GarageArea       SalePrice          grupo          gruposHC
+##  Min.   :0.000   Min.   : 180.0   Min.   :228950   Min.   :1.000   Min.   :2  
+##  1st Qu.:3.000   1st Qu.: 552.0   1st Qu.:251000   1st Qu.:1.000   1st Qu.:2  
+##  Median :3.000   Median : 683.0   Median :278000   Median :1.000   Median :2  
+##  Mean   :3.022   Mean   : 688.3   Mean   :297184   Mean   :1.394   Mean   :2  
+##  3rd Qu.:4.000   3rd Qu.: 834.0   3rd Qu.:325000   3rd Qu.:2.000   3rd Qu.:2  
+##  Max.   :5.000   Max.   :1390.0   Max.   :501837   Max.   :2.000   Max.   :2
+\end{verbatim}
+
+\begin{verbatim}
+##     LotArea       OverallQual      OverallCond      YearBuilt     BedroomAbvGr
+##  Min.   :12919   Min.   : 8.000   Min.   :5.000   Min.   :1994   Min.   :2.0  
+##  1st Qu.:15046   1st Qu.: 9.000   1st Qu.:5.000   1st Qu.:1996   1st Qu.:3.5  
+##  Median :15840   Median : 9.500   Median :5.000   Median :2004   Median :4.0  
+##  Mean   :23090   Mean   : 9.375   Mean   :5.125   Mean   :2002   Mean   :3.5  
+##  3rd Qu.:25091   3rd Qu.:10.000   3rd Qu.:5.000   3rd Qu.:2008   3rd Qu.:4.0  
+##  Max.   :53504   Max.   :10.000   Max.   :6.000   Max.   :2009   Max.   :4.0  
+##    GarageArea       SalePrice          grupo      gruposHC
+##  Min.   : 672.0   Min.   :538000   Min.   :2   Min.   :3  
+##  1st Qu.: 784.2   1st Qu.:556186   1st Qu.:2   1st Qu.:3  
+##  Median : 816.5   Median :597295   Median :2   Median :3  
+##  Mean   : 815.1   Mean   :621146   Mean   :2   Mean   :3  
+##  3rd Qu.: 834.2   3rd Qu.:655000   3rd Qu.:2   3rd Qu.:3  
+##  Max.   :1020.0   Max.   :755000   Max.   :2   Max.   :3
+\end{verbatim}
+
+Utilizando los grupos obtenidos a traves del clustering, es posible
+observar ciertos patrones, uno de estos es que la division notablemente
+se dio por la variabe ``SalePrice'' y por lo tanto, haciendo un summary
+de cada grupo podemos ver los limites superiores e inferiores de cada
+grupo, utilizando esto podemo ver las divisiones notables entre cada
+gran grupo de datos, a base de esto se determinó que las divisiones eran
+las siguientes: 251000 y 538000, es decir que cualquier cada por debajo
+del primero se considera económica en relación a las demás, las que se
+encuentran entre ambos datos son intermedias y las que estan por encima
+del segundo son las caras
+
+\includegraphics{HDT3Arboles_files/figure-latex/set-1.pdf}
+
+Árbol de regresión para predecir el precio de las viviendas utilizando
+el conjunto de entrenamiento.
+
+\begin{verbatim}
+## cex 0.588   xlim c(0, 1)   ylim c(0, 1)
+\end{verbatim}
+
+\includegraphics{HDT3Arboles_files/figure-latex/arbolregresion -1.pdf}
+
+Uso de PREDICT: Entre más cerca estén de Y , los observados se puede
+decir que el modelo es mejor. A continuación la correlación:eficiencia
+del algoritmo para clasificar y predecir, en dependencia de las
+características de la variable respuesta.
+
+ERROR RATE ESTIMADO:
+
+\begin{verbatim}
+## [1] 0.8748791
+\end{verbatim}
+
+A continuación un diagrama de dispersión donde se muestra la predicción
+de los precios de las viviendas
+
+\includegraphics{HDT3Arboles_files/figure-latex/dispersion de Y -1.pdf}
+
+Haga un análisis de la eficiencia del algoritmo usando una matriz de
+confusión para el árbol de clasificación. Tenga en cuenta la
+efectividad, donde el algoritmo se equivocó más, donde se equivocó menos
+y la importancia que tienen los errores.
+
+\begin{verbatim}
+## [1] 1168 2000
+\end{verbatim}
+
+\begin{verbatim}
+##   positive negative predicted_positive predicted_negative
+## 1      299     8533                 85               8747
+\end{verbatim}
+
+Analice el desempeño del árbol de regresión:
+
+La impureza de Gini es la probabilidad de cada elemento siendo elegido
+multiplicado por la probabilidad de un error en la categorización de ese
+elemento. Alcanza su mínimo (cero) cuando todos los casos del nodo
+corresponden a una sola categoría de destino
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+Repita los análisis usando random forest como algoritmo de predicción,
+explique sus resultados comparando ambos algoritmos.
+
+\begin{verbatim}
+## 
+## Call:
+##  randomForest(formula = Species ~ ., data = iris, importance = TRUE,      proximity = TRUE) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 2
+## 
+##         OOB estimate of  error rate: 4.67%
+## Confusion matrix:
+##            setosa versicolor virginica class.error
+## setosa         50          0         0        0.00
+## versicolor      0         47         3        0.06
+## virginica       0          4        46        0.08
+\end{verbatim}
+
+\begin{verbatim}
+##              setosa versicolor virginica MeanDecreaseAccuracy MeanDecreaseGini
+## Sepal.Length   5.88       5.87      9.21                10.62             9.37
+## Sepal.Width    5.23       0.31      4.71                 4.94             2.45
+## Petal.Length  21.60      31.41     27.71                32.39            42.13
+## Petal.Width   22.96      33.74     32.07                33.85            45.28
+\end{verbatim}
+
+\includegraphics{HDT3Arboles_files/figure-latex/arbolregresionRandomForest -1.pdf}
+
+\begin{verbatim}
+## [1] 0.7373483 0.7989356
+\end{verbatim}
+
+\includegraphics{HDT3Arboles_files/figure-latex/arbolregresionRandomForest -2.pdf}
+
+\begin{verbatim}
+## 
+## Call:
+##  randomForest(x = iris[1:4], y = iris$Species, sampsize = c(20,      30, 20)) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 2
+## 
+##         OOB estimate of  error rate: 4.67%
+## Confusion matrix:
+##            setosa versicolor virginica class.error
+## setosa         50          0         0        0.00
+## versicolor      0         47         3        0.06
+## virginica       0          4        46        0.08
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+##  randomForest(formula = Ozone ~ ., data = airquality, mtry = 3,      importance = TRUE, na.action = na.omit) 
+##                Type of random forest: regression
+##                      Number of trees: 500
+## No. of variables tried at each split: 3
+## 
+##           Mean of squared residuals: 302.2117
+##                     % Var explained: 72.46
+\end{verbatim}
+
+\begin{verbatim}
+##         %IncMSE IncNodePurity
+## Solar.R    9.76      10741.33
+## Wind      22.15      44234.96
+## Temp      43.85      53787.56
+## Month      2.59       1692.48
+## Day        0.93       6606.39
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+##  randomForest(x = x, y = y) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 2
+## 
+##         OOB estimate of  error rate: 52%
+## Confusion matrix:
+##    1  2 class.error
+## 1 25 25        0.50
+## 2 27 23        0.54
+\end{verbatim}
+
+\begin{verbatim}
+##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
+##   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
+##  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40 
+##   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
+##  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60 
+##   1   1   1   1   1   1   1   1   1   1   2   2   2   2   2   2   2   2   2   2 
+##  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80 
+##   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2 
+##  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 
+##   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2 
+## Levels: 1 2
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+##  randomForest(formula = sqrt(Fertility) ~ . - Catholic + I(Catholic <      50), data = swiss) 
+##                Type of random forest: regression
+##                      Number of trees: 500
+## No. of variables tried at each split: 1
+## 
+##           Mean of squared residuals: 0.3277816
+##                     % Var explained: 44.34
+\end{verbatim}
+
+\begin{verbatim}
+##   Courtelary     Delemont Franches-Mnt      Moutier   Neuveville   Porrentruy 
+##     8.541742     8.992064     9.124838     8.760460     8.541086     8.949770 
+##        Broye        Glane      Gruyere       Sarine      Veveyse        Aigle 
+##     8.933005     9.149158     8.908574     8.887482     9.117942     7.922911 
+##      Aubonne     Avenches     Cossonay    Echallens     Grandson     Lausanne 
+##     8.333468     8.221398     8.031662     8.306702     8.439164     7.720665 
+##    La Vallee       Lavaux       Morges       Moudon        Nyone         Orbe 
+##     7.571783     8.193442     7.984520     8.340828     7.854661     7.872754 
+##         Oron      Payerne Paysd'enhaut        Rolle        Vevey      Yverdon 
+##     8.497338     8.503535     8.411120     8.035106     7.839470     8.330708 
+##      Conthey    Entremont       Herens     Martigwy      Monthey   St Maurice 
+##     8.834288     8.654145     8.757652     8.560958     8.882983     8.469376 
+##       Sierre         Sion       Boudry La Chauxdfnd     Le Locle    Neuchatel 
+##     8.928218     8.635219     8.258310     8.028697     8.177889     7.779149 
+##   Val de Ruz ValdeTravers V. De Geneve  Rive Droite  Rive Gauche 
+##     8.573018     8.155001     6.776675     7.527191     7.289894
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+##  randomForest(x = x[-3], y = x[[3]], ntree = 10) 
+##                Type of random forest: regression
+##                      Number of trees: 10
+## No. of variables tried at each split: 1
+## 
+##           Mean of squared residuals: 1.599315
+##                     % Var explained: -44.33
+\end{verbatim}
+
+\begin{verbatim}
+##  [1] 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+\end{verbatim}
+
+\begin{verbatim}
+##  num [1:150, 1:150] 1 0.386 0.347 0.307 0.881 ...
+##  - attr(*, "dimnames")=List of 2
+##   ..$ : chr [1:150] "1" "2" "3" "4" ...
+##   ..$ : chr [1:150] "1" "2" "3" "4" ...
+\end{verbatim}
+
+\end{document}
