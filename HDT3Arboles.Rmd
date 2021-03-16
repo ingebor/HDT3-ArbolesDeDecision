@@ -2,7 +2,7 @@
 title: "HDT3Arboles"
 author: "Ayleen Rubio 19003, Andrés Say 19705. Andreé Toledo 18439"
 date: "8/3/2021"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
