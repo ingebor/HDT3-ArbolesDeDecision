@@ -26,6 +26,9 @@ library(tree)
 library(rpart.plot)
 library(randomForest)
 library(rpart)
+library(ISLR)
+library(MASS)
+library(dplyr)
 ```
 
 # Hoja de Trabajo No. 3: Árboles de Decisión  
@@ -492,7 +495,8 @@ arbolModelo<-rpart(SalePrice~.,datosCasas,method = "anova")
 rpart.plot(arbolModelo)
 
 ```
-Árbol de regresión para predecir el precio de las viviendas utilizando el conjunto de entrenamiento. Entre más cerca estén las de los  observados se puede decir que el modelo es mejor. A continuación la correlación entre  
+
+Árbol de regresión para predecir el precio de las viviendas utilizando el conjunto de entrenamiento.
 
 
 ```{r arbolregresion , echo=FALSE}
@@ -516,20 +520,38 @@ prp(mod1, main="",
     split.border.col = "darkgray", # darkgray border on split boxes
     split.round = 0.5)             # round the split box corners a tad
 
+
+
+
+
+```
+
+Uso de PREDICT: Entre más cerca estén de Y , los  observados se puede decir que el modelo es mejor. A continuación la correlación:eficiencia  del  algoritmo  para clasificar y predecir, en dependencia de las características de la variable respuesta.
+
+```{r predict , echo=FALSE}
 y_hat <- predict(object=mod1, newdata=datosCasas)
 cor(y_hat, datos$SalePrice)
 
+```
+
+A continuación un diagrama de dispersión donde se muestra la predicción de los precios de las viviendas
+
+```{r dispersion de Y , echo=FALSE}
+y_hat <- predict(object=mod1, newdata=datosCasas)
 plot(x=datosCasas$SalePrice, y=y_hat, pch=20, las=1, xlab='y', ylab=expression(hat(SalePrice)))
 abline(a=0, b=1, lty="dashed", col="blue")
 
 ```
 
-Utilice  el  modelo  con  el  conjunto  de  prueba  y  determinela  eficiencia  del  algoritmo  para clasificar ypredecir, en dependencia de las características de la variable respuesta. 
-```{r arbolregresionEficiencia , echo=FALSE}
 
-```
-Haga un análisis de la eficiencia del algoritmo usando una matriz de confusiónpara el árbol de clasificación. Tenga en cuenta la efectividad, donde el algoritmo se equivocó más, donde se equivocó menos y la importancia que tienen los errores.
+Haga un análisis de la eficiencia del algoritmo usando una matriz de confusión para el árbol de clasificación. Tenga en cuenta la efectividad, donde el algoritmo se equivocó más, donde se equivocó menos y la importancia que tienen los errores.
 ```{r matriz confusion , echo=FALSE}
+datosCasas <- read.csv("train.csv")
+
+ntrain <- nrow(datosCasas)*0.8
+ntest <- nrow(Default)*0.2
+c(ntrain,ntest)
+
 
 ```
 Analice el desempeño del árbol de regresión.
