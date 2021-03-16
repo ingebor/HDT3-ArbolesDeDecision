@@ -552,7 +552,27 @@ ntrain <- nrow(datosCasas)*0.8
 ntest <- nrow(Default)*0.2
 c(ntrain,ntest)
 
+set.seed(161)
+index_train<-sample(1:nrow(Default),size = ntrain)
+train<-Default[index_train,]
+test<-Default[-index_train,]
 
+#summary(train)
+#summary(test)
+
+logit_reg <- glm(default~balance+student+income,data = train,family = "binomial")
+lda_fit<-lda(default~balance+student+income,data=train)
+predicted_value <- predict(logit_reg,test,type = "response")
+predicted_class <- ifelse(predicted_value>0.5, "Yes","No")
+performance_data<-data.frame(observed=test$default,
+           predicted= predicted_class)
+
+positive <- sum(performance_data$observed=="Yes")
+negative <- sum(performance_data$observed=="No")
+predicted_positive <- sum(performance_data$predicted=="Yes")
+predicted_negative <- sum(performance_data$predicted=="No")
+total <- nrow(performance_data)
+data.frame(positive, negative,predicted_positive,predicted_negative)
 ```
 Analice el desempeño del árbol de regresión.
 ```{r arbolregresionDesempeño, echo=FALSE}
