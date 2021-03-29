@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #C:/Users/Andree/Documents/GitHub/HDT3-ArbolesDeDecision
 
 
-knitr::opts_knit$set(root.dir="C:/Users/Andree/Documents/GitHub/HDT3-ArbolesDeDecision")
+knitr::opts_knit$set(root.dir="C:/Users/andre/OneDrive/Documentos/HT1.Analisis-Exploratorio")
 
 library(cluster) #Para calcular la silueta
 library(e1071)#para cmeans
